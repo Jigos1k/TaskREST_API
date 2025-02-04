@@ -1,0 +1,30 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: Laravel-REST_API
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8000:80"
+    networks:
+      - laravel-network
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    container_name: Laravel-REST_API-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - laravel-network
+
+volumes:
+  dbdata:
+    driver: local
+
+networks:
+  laravel-network:
+    driver: bridge
