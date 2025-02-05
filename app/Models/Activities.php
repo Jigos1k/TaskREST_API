@@ -14,12 +14,12 @@ class Activities extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Activity::class, 'parent_id');
+        return $this->belongsTo(Activities::class, 'parent_id');
     }
 
     public function children()
     {
-        return $this->hasMany(Activity::class, 'parent_id');
+        return $this->hasMany(Activities::class, 'parent_id');
     }
 
     public function organizations()

@@ -9,7 +9,7 @@ class Organization extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', building_id];
+    protected $fillable = ['name', 'building_id'];
 
     public function building()
     {
@@ -23,6 +23,6 @@ class Organization extends Model
 
     public function activities()
     {
-        return $this->belongsToMany(Activity::class, 'activity_organization');
+        return $this->belongsToMany(Activities::class, 'activity_organization');
     }
 }

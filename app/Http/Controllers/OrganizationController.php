@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Organization;
+use App\Models\Activities;
 use App\Models\Building;
 
 class OrganizationController extends Controller
@@ -19,7 +20,7 @@ class OrganizationController extends Controller
     public function getOrganizationsByActivity($activityId)
     {
         $organizations = Organization::whereHas('activities', function ($query) use ($activityId) {
-            $query->where('activity_id', $activityId);
+            $query->where('activities_id', $activityId);
         })->get();
 
         return response()->json(['organizations' => $organizations]);
@@ -42,7 +43,7 @@ class OrganizationController extends Controller
 
     public function getOrganizationById($organizationId)
     {
-        $organization = Organization::find($organizationId);
+        $organization = Organization::with(['building', 'activities'])->find($organizationId);
         if ($organization) {
             return response()->json(['organization' => $organization]);
         }
@@ -51,11 +52,11 @@ class OrganizationController extends Controller
 
     public function searchOrganizationsByActivity($activityId)
     {
-        $activityIds = Activity::where('parent_id', $activityId)->pluck('id')->toArray();
+        $activityIds = Activities::where('parent_id', $activityId)->pluck('id')->toArray();
         $activityIds[] = $activityId;
 
-        $organizations = Organization::whereHas('activities', function ($query) use ($activityIds) {
-            $query->whereIn('activity_id', $activityIds);
+        $organizations = Organization::with('activities')->whereHas('activities', function ($query) use ($activityIds) {
+            $query->whereIn('activities_id', $activityIds);
         })->get();
 
         return response()->json(['organizations' => $organizations]);
