@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{OrganizationController, };
+use App\Http\Controllers\{OrganizationController, CreateController};
 
 Route::get('/organizations/building/{buildingId}', [OrganizationController::class, 'getOrganizationsByBuilding']);
 Route::get('/organizations/activity/{activityId}', [OrganizationController::class, 'getOrganizationsByActivity']);
